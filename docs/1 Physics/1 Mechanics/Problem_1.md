@@ -99,5 +99,5 @@ This script generates a plot showing how range changes with the launch angle.
 
 This document provides a foundational understanding of projectile motion, helping in both theoretical and practical applications.
 
-isil 
+
 
