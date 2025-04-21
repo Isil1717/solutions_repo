@@ -86,7 +86,7 @@ plt.title('Projectile Range vs. Angle')
 plt.grid()
 plt.show()
 ```
-![alt text](image.png)
+
 
 This script generates a plot showing how range changes with the launch angle.
 
