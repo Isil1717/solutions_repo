@@ -89,4 +89,8 @@ plt.ylabel("θ (rad)")
 plt.grid()
 plt.show()
 ```
-bbb
+![alt text](image-4.png)
+
+![alt text](image-7.png)
+
+ 
