@@ -205,3 +205,5 @@ r
 Kepler’s Law is critical in mass and distance calculations in astronomy
 
 This principle enables accurate modeling of satellites, planetary systems, and galaxies
+
+https://colab.research.google.com/drive/1vRSkWuLrWI9SwNMovPSkJw4wr2AKpbz4?authuser=0#scrollTo=hj0QrGlqrL3B
