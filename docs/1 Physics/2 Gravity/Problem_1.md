@@ -79,6 +79,8 @@ import matplotlib.pyplot as plt
 G = 6.67430e-11        # Gravitational constant (m^3 kg^-1 s^-2)
 M = 5.972e24           # Mass of Earth (kg)
 
+```
+
 📐 Radius and Period Calculations
 radii = np.linspace(1e7, 5e8, 200)  # From 10,000 km to 500,000 km
 periods = 2 * np.pi * np.sqrt(radii**3 / (G * M))
