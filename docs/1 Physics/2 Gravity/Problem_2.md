@@ -175,3 +175,8 @@ plt.show()
 | Earth    | 7.91 | 11.18 | 42.13 |
 | Mars     | 5.03 | 7.11 | 34.38 |
 | Jupiter  | 42.12 | 59.55 | 66.69 | 
+
+![alt text](image-9.png)
+![alt text](image-8.png)
+![alt text](image-10.png)
+![alt text](image-11.png)
