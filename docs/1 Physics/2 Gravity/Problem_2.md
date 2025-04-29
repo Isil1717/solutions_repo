@@ -5,18 +5,7 @@ This project calculates the **first**, **second**, and **third** cosmic velociti
 
 ---
 
-##  Table of Contents
 
-1. [Theoretical Background](#-theoretical-background)
-    - [First Cosmic Velocity](#-first-cosmic-velocity)
-    - [Second Cosmic Velocity](#-second-cosmic-velocity)
-    - [Third Cosmic Velocity](#-third-cosmic-velocity)
-2. [Constants and Parameters](#-constants-and-parameters)
-3. [Python Code Implementation](#-python-code-implementation)
-4. [Results](#-results)
-5. [Visualization](#-visualization)
-6. [Applications in Space Exploration](#-applications-in-space-exploration)
-7. [Conclusions](#-conclusions)
 
 ---
 
@@ -176,7 +165,7 @@ plt.show()
 | Mars     | 5.03 | 7.11 | 34.38 |
 | Jupiter  | 42.12 | 59.55 | 66.69 | 
 
-![alt text](image-9.png)
-![alt text](image-8.png)
-![alt text](image-10.png)
-![alt text](image-11.png)
+![alt text](image-12.png)
+![alt text](image-14.png)
+![alt text](image-15.png)
+![alt text](image-16.png)
