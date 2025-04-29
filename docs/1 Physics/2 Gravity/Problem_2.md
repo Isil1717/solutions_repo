@@ -101,7 +101,7 @@ Where:
 
 ---
 
-## 3. 🧠 Python Code Implementation
+## 3. 🧠 Python Code Implementations
 
 ```python
 import numpy as np
