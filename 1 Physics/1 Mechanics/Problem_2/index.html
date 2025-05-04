@@ -245,6 +245,55 @@
 <h2 id="conclusion">Conclusion</h2>
 <p>The dynamics of the forced damped pendulum provide a rich example of nonlinear behavior, including resonance, chaos, and periodic motion. By varying the damping coefficient, driving amplitude, and driving frequency, we observe a variety of dynamic responses, from stable oscillations to chaotic motion.</p>
 <p>Numerical simulations and analytical techniques such as the Lyapunov exponent and bifurcation diagrams allow for a deeper understanding of these behaviors, with applications in engineering, biomechanics, and electronics.</p>
+<pre><code class="language-python">import numpy as np
+import matplotlib.pyplot as plt
+from scipy.integrate import solve_ivp
+
+# --- Physical parameters ---
+g = 9.81       # gravitational acceleration (m/s^2)
+L = 1.0        # pendulum length (m)
+b = 0.5        # damping coefficient
+A = 1.2        # amplitude of the driving force
+omega = 2.0    # angular frequency of the driving force
+
+# --- Time settings ---
+t_start = 0.0
+t_end = 50.0
+dt = 0.01
+t_eval = np.arange(t_start, t_end, dt)
+
+# --- Initial conditions ---
+theta0 = 0.2         # initial angle (radians)
+theta_dot0 = 0.0     # initial angular velocity (rad/s)
+initial_state = [theta0, theta_dot0]
+
+# --- Differential equations ---
+def forced_damped_pendulum(t, y):
+    theta, theta_dot = y
+    dtheta_dt = theta_dot
+    dtheta_dot_dt = -b * theta_dot - (g / L) * np.sin(theta) + A * np.cos(omega * t)
+    return [dtheta_dt, dtheta_dot_dt]
+
+# --- Solve the system ---
+sol = solve_ivp(
+    fun=forced_damped_pendulum,
+    t_span=(t_start, t_end),
+    y0=initial_state,
+    t_eval=t_eval,
+    method='RK45'
+)
+
+# --- Plot the results ---
+plt.figure(figsize=(10, 5))
+plt.plot(sol.t, sol.y[0], label='θ(t) [rad]', color='darkblue')
+plt.xlabel('Time [s]')
+plt.ylabel('Angle θ [rad]')
+plt.title('Forced Damped Pendulum Simulation')
+plt.grid(True)
+plt.legend()
+plt.tight_layout()
+plt.show()
+</code></pre>
 </div>
 </div><footer>
 <div aria-label="Footer Navigation" class="rst-footer-buttons" role="navigation">
