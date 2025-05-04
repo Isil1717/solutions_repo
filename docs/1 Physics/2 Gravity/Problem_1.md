@@ -1,211 +1,181 @@
-# 🌌 Kepler’s Third Law: Orbital Period and Radius Simulation with Python
+#  Kepler's Third Law: Orbital Period and Radius
+
+##  Motivation
+
+In celestial mechanics, **Kepler's Third Law** describes a fundamental connection between the **orbital period** and the **orbital radius** of a body moving around a central mass. This law allows us to estimate the structure and scale of planetary systems, including our own Solar System.
+
+Kepler discovered this empirical law from observations, and later Newton derived it from the law of universal gravitation. It is one of the most elegant and powerful tools in astrophysics.
 
 ---
 
-## 📘 Introduction
+##  Derivation from Newtonian Mechanics
 
-Johannes Kepler’s Third Law is a fundamental principle in celestial mechanics. It describes the relationship between the orbital period and the radius of a body orbiting a central mass in a circular orbit.
-
-**Kepler’s Third Law (for circular orbits):**
+Let a small mass \( m \) orbit a massive central body of mass \( M \) (e.g., the Earth around the Sun) in a **circular orbit** of radius \( r \). The **gravitational force** provides the **centripetal acceleration**:
 
 $$
-T^2 = \frac{4 \pi^2 r^3}{G M}
+F_{\text{gravity}} = \frac{G M m}{r^2}, \quad F_{\text{centripetal}} = \frac{m v^2}{r}
 $$
 
-Where:
-
-- \( T \): Orbital period (seconds)  
-- \( r \): Orbital radius (meters)  
-- \( G \): Universal gravitational constant \( (6.67430 \times 10^{-11} \, \text{m}^3 \text{kg}^{-1} \text{s}^{-2}) \)  
-- \( M \): Mass of the central body (e.g., Earth) in kilograms
-
-This equation shows:
-
-$$
-T^2 \propto r^3
-$$
-
-This elegant yet powerful relationship allows us to analyze planetary systems, satellites, star systems, and even galaxies.
-
----
-
-## 🎯 Objective
-
-- Numerically verify Kepler’s Third Law  
-- Calculate orbital periods for various radii using Python  
-- Visualize the linear relationship between \( T^2 \) and \( r^3 \)  
-- Discuss real-world examples (e.g., Earth-Moon system)
-
----
-
-## 🧠 Theoretical Background
-
-The gravitational force equals the centripetal force for circular motion:
+Equating the two forces:
 
 $$
 \frac{G M m}{r^2} = \frac{m v^2}{r}
 $$
 
-Solving for orbital speed \( v \):
+Simplifying and solving for orbital speed \( v \):
 
 $$
-v = \sqrt{\frac{G M}{r}}
+v^2 = \frac{G M}{r}
 $$
 
-Orbital period:
+The **orbital period** \( T \) is the time to complete one full orbit, which is the circumference divided by speed:
 
 $$
 T = \frac{2\pi r}{v}
 $$
 
-Substitute \( v \):
+Substitute the expression for \( v \):
 
 $$
-T = 2\pi \sqrt{\frac{r^3}{G M}} \Rightarrow T^2 = \frac{4\pi^2 r^3}{G M}
+T = 2\pi r \sqrt{\frac{r}{G M}} = 2\pi \sqrt{\frac{r^3}{G M}}
+$$
+
+Now squaring both sides:
+
+$$
+T^2 = \frac{4\pi^2}{G M} \cdot r^3
+$$
+
+This is the **mathematical form** of **Kepler's Third Law**:
+
+$$
+T^2 \propto r^3
+$$
+
+The proportionality constant depends only on the mass \( M \) of the central object.
+
+---
+
+##  Implications of Kepler's Law
+
+1. **Universal Relationship**: All bodies orbiting the same central mass follow the same \( T^2/r^3 \) ratio.
+2. **Comparative Analysis**: Knowing \( T \) and \( r \) for one object allows us to predict them for another.
+3. **Mass Estimation**: Rearranging the equation allows for calculating the mass of a star or planet:
+
+$$
+M = \frac{4\pi^2 r^3}{G T^2}
 $$
 
 ---
 
-## 💻 Python Implementation
+##  Real-World Examples
 
-Let’s verify this relationship numerically.
+###  Example 1: The Moon's Orbit Around Earth
 
-### 📦 Required Libraries
+- Radius: \( r = 3.84 \times 10^8 \) m  
+- Period: \( T = 27.3 \) days \( \approx 2.36 \times 10^6 \) s
+
+Using Kepler's Law:
+
+$$
+T^2 = \frac{4\pi^2 r^3}{G M_{\text{Earth}}}
+$$
+
+This checks out when we use Earth’s mass \( M = 5.97 \times 10^{24} \, \text{kg} \).
+
+### ☉ Example 2: Planets Around the Sun
+
+| Planet   | \( r \) (AU) | \( T \) (years) | \( T^2 \) | \( r^3 \) |
+|----------|-------------|-----------------|----------|----------|
+| Mercury  | 0.39        | 0.24            | 0.0576   | 0.0593   |
+| Earth    | 1.00        | 1.00            | 1.0000   | 1.0000   |
+| Jupiter  | 5.20        | 11.86           | 140.7    | 140.6    |
+
+We observe:
+
+$$
+\frac{T^2}{r^3} \approx \text{constant}
+$$
+
+---
+
+##  Python Simulation: Numerical Verification
 
 ```python
 import numpy as np
 import matplotlib.pyplot as plt
-🌍 Physical Constants
-G = 6.67430e-11        # Gravitational constant (m^3 kg^-1 s^-2)
-M = 5.972e24           # Mass of Earth (kg)
 
-```
+# Constants
+G = 6.67430e-11  # m^3 kg^-1 s^-2
+M_sun = 1.989e30  # kg
 
-📐 Radius and Period Calculations
-radii = np.linspace(1e7, 5e8, 200)  # From 10,000 km to 500,000 km
-periods = 2 * np.pi * np.sqrt(radii**3 / (G * M))
+# Generate orbital radii from 0.1 AU to 5 AU (converted to meters)
+AU = 1.496e11  # meters
+radii = np.linspace(0.1 * AU, 5 * AU, 100)
+T_squared = (4 * np.pi**2 * radii**3) / (G * M_sun)
+T_days = np.sqrt(T_squared) / (60 * 60 * 24)
 
-📈 Plot: 
-𝑇
-2
-T 
-2
-  vs 
-𝑟
-3
-r 
-3
- 
-python
-
-plt.figure(figsize=(10, 6))
-plt.plot(radii**3, periods**2, label=r"$T^2$ vs $r^3$", color="blue")
-plt.xlabel("Orbital Radius Cubed $r^3$ (m³)")
-plt.ylabel("Orbital Period Squared $T^2$ (s²)")
-plt.title("Kepler's Third Law Verification")
+# Plot T^2 vs r^3
+plt.figure(figsize=(8,6))
+plt.plot(radii**3, T_squared, label=r"$T^2$ vs $r^3$", color='blue')
+plt.xlabel(r"Orbital Radius Cubed ($r^3$) [$\mathrm{m}^3$]")
+plt.ylabel(r"Orbital Period Squared ($T^2$) [$\mathrm{s}^2$]")
+plt.title("Kepler's Third Law Simulation")
 plt.grid(True)
 plt.legend()
 plt.tight_layout()
 plt.show()
+```
 
-🌍 Real-World Example: The Moon’s Orbit
-Distance from Earth:
-𝑟
-≈
-3.84
-×
-10
-8
- 
-m
-r≈3.84×10 
-8
- m
+---
 
-Orbital period:
-𝑇
-≈
-27.3
- 
-days
-=
-2.36
-×
-10
-6
- 
-seconds
-T≈27.3days=2.36×10 
-6
- seconds
+## Visualization & Analysis
 
-This can be used to reverse-calculate the mass of Earth using Kepler’s Law.
+The plot above shows a **linear relationship** between \( T^2 \) and \( r^3 \), confirming the theoretical expectation from Kepler’s Third Law.
 
-📌 Extension to Elliptical Orbits
-Circular orbits are a special case. For elliptical orbits, Kepler’s Third Law generalizes to:
+To quantify:
 
-𝑇
-2
-=
-4
-𝜋
-2
-𝑎
-3
-𝐺
-(
-𝑀
-+
-𝑚
-)
-T 
-2
- = 
-G(M+m)
-4π 
-2
- a 
-3
- 
-​
- 
-Here, 
-𝑎
-a is the semi-major axis. If the orbiting body is much smaller than the central body, 
-𝑀
-+
-𝑚
-≈
-𝑀
-M+m≈M.
+```python
+from scipy.stats import linregress
 
-✅ Conclusion
-The relationship 
-𝑇
-2
-∝
-𝑟
-3
-T 
-2
- ∝r 
-3
-  has been confirmed numerically
+slope, intercept, r_value, _, _ = linregress(radii**3, T_squared)
+print("Slope:", slope)
+print("R^2:", r_value**2)
+```
 
-The graph shows a clear linear trend between 
-𝑇
-2
-T 
-2
-  and 
-𝑟
-3
-r 
-3
- 
+An \( R^2 \) value near 1 confirms an excellent fit.
 
-Kepler’s Law is critical in mass and distance calculations in astronomy
+---
 
-This principle enables accurate modeling of satellites, planetary systems, and galaxies
+##  Extension to Elliptical Orbits
 
-![alt text](image-1.png)
+Kepler originally formulated his third law for **elliptical orbits**, using the **semi-major axis** \( a \) instead of radius \( r \):
+
+$$
+T^2 = \frac{4\pi^2 a^3}{G M}
+$$
+
+This form still holds for **non-circular**, but **bound** orbits like those of comets, satellites, and binary stars. The key is to replace radius with **semi-major axis**.
+
+---
+
+##  Summary
+
+- We derived Kepler's Third Law from Newton's gravitation.
+- We confirmed the relationship numerically using Python.
+- We discussed real-world systems where the law is applicable.
+- The law is essential for **orbital mechanics**, **space missions**, and **planetary astronomy**.
+
+---
+
+##  Further Exploration
+
+- Model elliptical orbits and test the same law using the semi-major axis.
+- Include perturbations (e.g., other planets' gravity).
+- Explore relativistic corrections (e.g., Mercury’s precession).
+
+---
+
+
+
+
