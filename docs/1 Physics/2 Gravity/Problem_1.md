@@ -176,6 +176,8 @@ This form still holds for **non-circular**, but **bound** orbits like those of c
 
 ---
 
+![alt text](image-17.png)
 
+![alt text](image-19.png)
 
-
+![alt text](image-20.png)
