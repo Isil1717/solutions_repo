@@ -206,14 +206,14 @@ G = 6.67430e-11        # Gravitational constant [m^3 kg^-1 s^-2]
 M = 5.972e24           # Mass of Earth [kg]
 R_earth = 6.371e6      # Radius of Earth [m]
 </code></pre>
-<p># Initial Conditions</p>
+<p>## Initial Conditions</p>
 <p>In this section, we define the <strong>initial conditions</strong> for the payload, which includes its altitude, initial position, and initial velocity.</p>
 <pre><code class="language-python"># Initial conditions
 altitude = 300e3                       # Altitude from Earth's surface (300 km)
 r0 = np.array([R_earth + altitude, 0])  # Initial position vector (x, y)
 v0 = np.array([0, 7700])                # Initial velocity vector (vx, vy) in m/s
 </code></pre>
-<h3 id="time-settings">⏱️ Time Settings</h3>
+<h3 id="time-settings">Time Settings</h3>
 <p>In this section, we define the <strong>time settings</strong> for the simulation, including the time step (<code>dt</code>) and the total simulation time (<code>T</code>).</p>
 <pre><code class="language-python"># Time settings
 dt = 1                 # Time step (seconds)
@@ -319,6 +319,9 @@ plt.show()
 <p><strong>Real-World Applications</strong>: This model can be applied to space missions, satellite deployments, or reentry predictions. Understanding the physics behind these trajectories is vital for designing successful space missions and ensuring the safety of payloads.</p>
 </li>
 </ul>
+<p><img alt="alt text" src="../image-21.png"/>
+<img alt="alt text" src="../image-23.png"/>
+<img alt="alt text" src="../image-24.png"/></p>
 </div>
 </div><footer>
 <div aria-label="Footer Navigation" class="rst-footer-buttons" role="navigation">
