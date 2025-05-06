@@ -53,7 +53,7 @@ M = 5.972e24           # Mass of Earth [kg]
 R_earth = 6.371e6      # Radius of Earth [m]
 ```
 
- # Initial Conditions
+ ## Initial Conditions
 
 In this section, we define the **initial conditions** for the payload, which includes its altitude, initial position, and initial velocity.
 
@@ -63,7 +63,7 @@ altitude = 300e3                       # Altitude from Earth's surface (300 km)
 r0 = np.array([R_earth + altitude, 0])  # Initial position vector (x, y)
 v0 = np.array([0, 7700])                # Initial velocity vector (vx, vy) in m/s
 ```
-### ⏱️ Time Settings
+###  Time Settings
 
 In this section, we define the **time settings** for the simulation, including the time step (`dt`) and the total simulation time (`T`).
 
@@ -155,3 +155,6 @@ In this project, we modeled the gravitational motion of a payload near Earth and
 
 - **Real-World Applications**: This model can be applied to space missions, satellite deployments, or reentry predictions. Understanding the physics behind these trajectories is vital for designing successful space missions and ensuring the safety of payloads.
 
+![alt text](image-21.png)
+![alt text](image-23.png)
+![alt text](image-24.png)
