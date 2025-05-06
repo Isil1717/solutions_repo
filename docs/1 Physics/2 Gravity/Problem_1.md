@@ -1,4 +1,5 @@
-#  Kepler's Third Law: Orbital Period and Radius
+# Problem 1
+Kepler's Third Law: Orbital Period and Radius
 
 ##  Motivation
 
@@ -175,9 +176,9 @@ This form still holds for **non-circular**, but **bound** orbits like those of c
 - Explore relativistic corrections (e.g., Mercury’s precession).
 
 ---
-
 ![alt text](image-17.png)
 
 ![alt text](image-19.png)
-
 ![alt text](image-20.png)
+
+
