@@ -53,7 +53,7 @@ M = 5.972e24           # Mass of Earth [kg]
 R_earth = 6.371e6      # Radius of Earth [m]
 ```
 
- ## Initial Conditions
+ # Initial Conditions
 
 In this section, we define the **initial conditions** for the payload, which includes its altitude, initial position, and initial velocity.
 
@@ -159,6 +159,6 @@ In this project, we modeled the gravitational motion of a payload near Earth and
 ![alt text](image-28.png)
 ![alt text](image-29.png)
 
-
-
 ![alt text](image-31.png)
+
+
