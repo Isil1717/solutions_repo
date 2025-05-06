@@ -1,6 +1,6 @@
  # Problem 3
   
-  #  Trajectories of a Freely Released Payload Near Earth
+  ##  Trajectories of a Freely Released Payload Near Earth
 
 ##  Motivation
 
@@ -156,5 +156,7 @@ In this project, we modeled the gravitational motion of a payload near Earth and
 - **Real-World Applications**: This model can be applied to space missions, satellite deployments, or reentry predictions. Understanding the physics behind these trajectories is vital for designing successful space missions and ensuring the safety of payloads.
 
 ![alt text](image-21.png)
+
 ![alt text](image-23.png)
+
 ![alt text](image-24.png)
