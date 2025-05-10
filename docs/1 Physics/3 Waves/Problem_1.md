@@ -266,8 +266,5 @@ This simulation reinforces key wave physics concepts such as:
 ---
 
 Ultimately, this project demonstrates the effectiveness of combining **analytical wave modeling** with **computational visualization** to explore fundamental physical behaviors in wave systems.
-
-
-
-
-
+ 
+ ![alt text](image-8.png)
