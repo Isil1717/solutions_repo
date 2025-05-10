@@ -172,6 +172,212 @@
 <div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
 <div class="section" itemprop="articleBody">
 <h1 id="problem-1">Problem 1</h1>
+<h1 id="interference-of-circular-waves-from-square-arranged-point-sources">Interference of Circular Waves from Square-Arranged Point Sources</h1>
+<h2 id="a-theoretical-and-computational-study-in-2d-water-wave-superposition">A Theoretical and Computational Study in 2D Water Wave Superposition</h2>
+<hr/>
+<h2 id="1-introduction">1. Introduction</h2>
+<p>Wave interference lies at the heart of wave physics. It refers to the phenomenon where two or more wavefronts overlap and combine to form a new wave pattern. On a water surface, <strong>circular waves</strong> from multiple point sources can interact in visually striking ways—forming alternating patterns of <strong>constructive</strong> and <strong>destructive interference</strong>.</p>
+<p>This document investigates the superposition of water waves emitted from four <strong>identical, coherent sources</strong> arranged in a <strong>square configuration</strong>. Using the wave equation in cylindrical coordinates and Python-based simulation, we model, visualize, and analyze the resulting <strong>interference pattern</strong>.</p>
+<hr/>
+<h2 id="2-theoretical-background">2. Theoretical Background</h2>
+<h3 id="21-wave-from-a-single-point-source">2.1 Wave from a Single Point Source</h3>
+<p>The displacement <span class="arithmatex">\( \eta \)</span> of a water surface at time <span class="arithmatex">\( t \)</span> and position <span class="arithmatex">\( (x, y) \)</span>, due to a wave originating from a point source at <span class="arithmatex">\( (x_0, y_0) \)</span>, is given by:</p>
+<div class="arithmatex">\[
+\eta(x, y, t) = \frac{A}{r} \cos(kr - \omega t + \phi)
+\]</div>
+<p>Where:</p>
+<ul>
+<li><span class="arithmatex">\( A \)</span>: amplitude of the wave,</li>
+<li><span class="arithmatex">\( r = \sqrt{(x - x_0)^2 + (y - y_0)^2} \)</span>: radial distance to source,</li>
+<li><span class="arithmatex">\( k = \frac{2\pi}{\lambda} \)</span>: wave number (with <span class="arithmatex">\( \lambda \)</span> wavelength),</li>
+<li><span class="arithmatex">\( \omega = 2\pi f \)</span>: angular frequency (with <span class="arithmatex">\( f \)</span> frequency),</li>
+<li><span class="arithmatex">\( \phi \)</span>: phase constant,</li>
+<li><span class="arithmatex">\( t \)</span>: time.</li>
+</ul>
+<blockquote>
+<p><strong>Note:</strong> The <span class="arithmatex">\( \frac{A}{r} \)</span> term models radial energy dispersion on a 2D surface. This simulates the realistic drop in amplitude with distance.</p>
+</blockquote>
+<hr/>
+<h3 id="22-superposition-of-multiple-sources">2.2 Superposition of Multiple Sources</h3>
+<p>If there are <span class="arithmatex">\( N \)</span> identical sources located at positions <span class="arithmatex">\( (x_i, y_i) \)</span>, the total displacement is:</p>
+<div class="arithmatex">\[
+\eta_{\text{total}}(x, y, t) = \sum_{i=1}^{N} \frac{A}{r_i} \cos(kr_i - \omega t + \phi)
+\]</div>
+<p>Where each <span class="arithmatex">\( r_i = \sqrt{(x - x_i)^2 + (y - y_i)^2} \)</span> is the distance from point <span class="arithmatex">\( (x, y) \)</span> to source <span class="arithmatex">\( i \)</span>.</p>
+<p>The <strong>interference pattern</strong> is determined by the phase differences between these cosine terms:</p>
+<ul>
+<li><strong>Constructive interference</strong>: <span class="arithmatex">\( kr_i - kr_j = 2\pi n \)</span></li>
+<li><strong>Destructive interference</strong>: <span class="arithmatex">\( kr_i - kr_j = (2n+1)\pi \)</span></li>
+</ul>
+<p>for integer <span class="arithmatex">\( n \)</span>.</p>
+<hr/>
+<h3 id="23-phase-matching-interference-zones">2.3 Phase Matching &amp; Interference Zones</h3>
+<p>For two waves:</p>
+<div class="arithmatex">\[
+\eta_1 = \frac{A}{r_1} \cos(kr_1 - \omega t), \quad \eta_2 = \frac{A}{r_2} \cos(kr_2 - \omega t)
+\]</div>
+<p>The total displacement:</p>
+<div class="arithmatex">\[
+\eta = \eta_1 + \eta_2 = \frac{A}{r_1} \cos(kr_1 - \omega t) + \frac{A}{r_2} \cos(kr_2 - \omega t)
+\]</div>
+<p>Using the trigonometric identity:</p>
+<div class="arithmatex">\[
+\cos \alpha + \cos \beta = 2 \cos\left(\frac{\alpha + \beta}{2}\right) \cos\left(\frac{\alpha - \beta}{2}\right)
+\]</div>
+<p>We obtain an <strong>interference envelope</strong>:</p>
+<div class="arithmatex">\[
+\eta = 2A_{\text{eff}} \cos\left(\frac{k(r_1 - r_2)}{2} \right) \cdot \cos\left( \frac{k(r_1 + r_2)}{2} - \omega t \right)
+\]</div>
+<p>Which reveals <strong>oscillating interference fringes</strong> governed by the <strong>path difference</strong> <span class="arithmatex">\( r_1 - r_2 \)</span>.</p>
+<hr/>
+<h2 id="3-geometry-of-the-setup">3. Geometry of the Setup</h2>
+<p>We use a <strong>square</strong> of side length <span class="arithmatex">\( L = 2 \)</span>, centered at the origin. The sources are located at:</p>
+<ul>
+<li><span class="arithmatex">\( S_1 = (-1, -1) \)</span></li>
+<li><span class="arithmatex">\( S_2 = (-1, +1) \)</span></li>
+<li><span class="arithmatex">\( S_3 = (+1, -1) \)</span></li>
+<li><span class="arithmatex">\( S_4 = (+1, +1) \)</span></li>
+</ul>
+<p>These sources are:</p>
+<ul>
+<li>Coherent (same frequency),</li>
+<li>In-phase (same <span class="arithmatex">\( \phi = 0 \)</span>),</li>
+<li>Identical in amplitude and wavelength.</li>
+</ul>
+<hr/>
+<h2 id="4-python-simulation-code">4. Python Simulation Code</h2>
+<pre><code class="language-python">import numpy as np
+import matplotlib.pyplot as plt
+
+# --- Parameters ---
+A = 1.0
+wavelength = 1.0
+frequency = 1.0
+phi = 0
+k = 2 * np.pi / wavelength
+omega = 2 * np.pi * frequency
+t = 0
+
+# --- Grid ---
+x = np.linspace(-5, 5, 500)
+y = np.linspace(-5, 5, 500)
+X, Y = np.meshgrid(x, y)
+
+# --- Source Positions (Square) ---
+L = 2.0
+sources = [(-1, -1), (-1, 1), (1, -1), (1, 1)]
+
+# --- Superposition of Waves ---
+eta_total = np.zeros_like(X)
+
+for (x0, y0) in sources:
+    R = np.sqrt((X - x0)**2 + (Y - y0)**2) + 1e-6  # Avoid singularity at R=0
+    eta = (A / R) * np.cos(k * R - omega * t + phi)
+    eta_total += eta
+
+# --- Plot ---
+plt.figure(figsize=(10, 8))
+plt.pcolormesh(X, Y, eta_total, shading='auto', cmap='seismic')
+plt.colorbar(label='Surface Displacement η')
+plt.title("Interference of 4 Point Sources (Square)")
+plt.xlabel("x position")
+plt.ylabel("y position")
+plt.axis('equal')
+plt.tight_layout()
+plt.show()
+</code></pre>
+<hr/>
+<h2 id="5-analysis-of-results">5. Analysis of Results</h2>
+<h3 id="constructive-interference">Constructive Interference</h3>
+<p>Occurs when the path difference from any two sources is an integer multiple of <span class="arithmatex">\( \lambda \)</span>:</p>
+<div class="arithmatex">\[
+\Delta r = n \lambda
+\]</div>
+<p>Produces <strong>bright fringes</strong> in the plot.</p>
+<h3 id="destructive-interference">Destructive Interference</h3>
+<p>Occurs when:</p>
+<div class="arithmatex">\[
+\Delta r = (n + \frac{1}{2}) \lambda
+\]</div>
+<p>These appear as <strong>dark regions</strong>.</p>
+<h3 id="symmetry">Symmetry</h3>
+<ul>
+<li>The interference pattern exhibits <strong>4-fold rotational symmetry</strong> due to the square geometry.</li>
+<li>Patterns are <strong>stationary</strong> since all sources oscillate in phase.</li>
+</ul>
+<hr/>
+<h2 id="6-experimental-extensions">6. Experimental Extensions</h2>
+<h3 id="time-evolution">Time Evolution</h3>
+<p>To animate the pattern over time, iterate over <code>t</code>:</p>
+<pre><code class="language-python">for t in np.linspace(0, 2*np.pi, 100):
+    ...
+</code></pre>
+<h3 id="other-polygons">Other Polygons</h3>
+<ul>
+<li><strong>Equilateral triangle</strong>: Use 3 points at <span class="arithmatex">\( 120^\circ \)</span> intervals.</li>
+<li><strong>Pentagon</strong>: Use polar coordinates:</li>
+</ul>
+<pre><code class="language-python">N = 5
+R = 2
+sources = [(R * np.cos(2*np.pi*i/N), R * np.sin(2*np.pi*i/N)) for i in range(N)]
+</code></pre>
+<h3 id="arbitrary-phases">Arbitrary Phases</h3>
+<p>Vary <span class="arithmatex">\( \phi \)</span> per source to simulate <strong>phase delays</strong> or <strong>non-coherent waves</strong>.</p>
+<hr/>
+<h2 id="7-generalization">7. Generalization</h2>
+<p>The method above can be generalized to <strong>any N sources</strong> located at arbitrary positions <span class="arithmatex">\( (x_i, y_i) \)</span>, possibly with varying phase offsets <span class="arithmatex">\( \phi_i \)</span>:</p>
+<div class="arithmatex">\[
+\eta(x, y, t) = \sum_{i=1}^{N} \frac{A}{r_i} \cos(kr_i - \omega t + \phi_i)
+\]</div>
+<p>This enables modeling of more complex systems, including:</p>
+<ul>
+<li>Laser interference,</li>
+<li>Sound field simulations,</li>
+<li>Quantum wavefunction interference.</li>
+</ul>
+<hr/>
+<h2 id="8-suggested-folder-structure">8. Suggested Folder Structure</h2>
+<pre><code>wave_simulation_square/
+├── interference_square.md
+├── simulation_square.py
+├── images/
+│   └── pattern_snapshot.png
+├── animation/
+│   └── gif_frames/
+└── README.md
+</code></pre>
+<hr/>
+<h2 id="9-conclusion">9. Conclusion</h2>
+<p>In this study, we investigated the <strong>interference of circular water waves</strong> emitted from four coherent sources positioned at the vertices of a square. By employing the <strong>principle of superposition</strong>, we derived and simulated the resulting surface displacement:</p>
+<div class="arithmatex">\[
+\eta_{\text{total}}(x, y, t) = \sum_{i=1}^{N} \frac{A}{r_i} \cos(k r_i - \omega t + \phi_i)
+\]</div>
+<p>where each <span class="arithmatex">\( r_i \)</span> is the distance from the <span class="arithmatex">\(i^{th}\)</span> source to the point <span class="arithmatex">\( (x, y) \)</span>, and all sources share common amplitude <span class="arithmatex">\( A \)</span>, wave number <span class="arithmatex">\( k \)</span>, frequency <span class="arithmatex">\( \omega \)</span>, and coherent phase differences.</p>
+<h3 id="key-findings">Key Findings:</h3>
+<ul>
+<li>The interference pattern exhibits <strong>high symmetry</strong>, due to the square configuration.</li>
+<li><strong>Constructive interference</strong> appears when the path differences between sources align to integer multiples of the wavelength <span class="arithmatex">\( \lambda \)</span>.</li>
+<li><strong>Destructive interference</strong> results from phase differences of odd multiples of <span class="arithmatex">\( \pi \)</span>, forming nodal lines (regions of cancellation).</li>
+<li>The amplitude decays with distance <span class="arithmatex">\( \left(\propto \frac{1}{r}\right) \)</span>, modeling physical energy dissipation in water.</li>
+<li>The overall displacement field is <strong>spatially complex</strong> but <strong>temporally periodic</strong>, governed by the cosine term involving time <span class="arithmatex">\( t \)</span>.</li>
+</ul>
+<h3 id="physical-implications">Physical Implications:</h3>
+<p>This simulation reinforces key wave physics concepts such as:</p>
+<ul>
+<li>The <strong>superposition principle</strong> in linear systems,</li>
+<li>The effects of <strong>phase coherence</strong> and source arrangement,</li>
+<li>The formation of <strong>nodal and antinodal lines</strong>,</li>
+<li>Realistic <strong>amplitude decay</strong> over space.</li>
+</ul>
+<h3 id="potential-extensions">Potential Extensions:</h3>
+<ul>
+<li>Varying the <strong>number of sources</strong> or changing the polygon (triangle, pentagon, etc.)</li>
+<li>Introducing <strong>initial phase differences</strong> between emitters</li>
+<li>Adding <strong>obstacles or barriers</strong> to study reflection and diffraction</li>
+<li>Extending the model to simulate <strong>optical</strong>, <strong>acoustic</strong>, or <strong>quantum</strong> interference phenomena</li>
+</ul>
+<hr/>
+<p>Ultimately, this project demonstrates the effectiveness of combining <strong>analytical wave modeling</strong> with <strong>computational visualization</strong> to explore fundamental physical behaviors in wave systems.</p>
 </div>
 </div><footer>
 <div aria-label="Footer Navigation" class="rst-footer-buttons" role="navigation">
