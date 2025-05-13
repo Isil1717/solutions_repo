@@ -186,8 +186,10 @@ Understanding Lorentz force dynamics is crucial in disciplines like **astrophysi
 
 ---
 
+![alt text](image.png)
+
+![alt text](image-1.png)
 
 
-
-
+![alt text](image-2.png)
 
