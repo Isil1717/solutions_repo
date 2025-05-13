@@ -172,123 +172,191 @@
 <div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
 <div class="section" itemprop="articleBody">
 <h1 id="problem-1">Problem 1</h1>
-<h1 id="lorentz-force-simulation-in-electromagnetic-fields">Lorentz Force Simulation in Electromagnetic Fields</h1>
+<h1 id="lorentz-force-simulation-dynamics-of-charged-particles-in-electromagnetic-fields">Lorentz Force Simulation: Dynamics of Charged Particles in Electromagnetic Fields</h1>
 <h2 id="introduction">Introduction</h2>
-<p>This project simulates the <strong>motion of charged particles</strong> under electric and magnetic fields, governed by the <strong>Lorentz force</strong>:</p>
+<p>This project simulates the <strong>motion of a charged particle</strong> under the combined influence of electric (<span class="arithmatex">\( \vec{E} \)</span>) and magnetic (<span class="arithmatex">\( \vec{B} \)</span>) fields, using the classical <strong>Lorentz force law</strong>:</p>
 <div class="arithmatex">\[
 \vec{F} = q\vec{E} + q(\vec{v} \times \vec{B})
 \]</div>
+<p>Where:
+- <span class="arithmatex">\( \vec{F} \)</span>: total force acting on the particle (Newtons)<br/>
+- <span class="arithmatex">\( q \)</span>: electric charge of the particle (Coulombs)<br/>
+- <span class="arithmatex">\( \vec{E} \)</span>: electric field vector (V/m)<br/>
+- <span class="arithmatex">\( \vec{v} \)</span>: instantaneous velocity of the particle (m/s)<br/>
+- <span class="arithmatex">\( \vec{B} \)</span>: magnetic field vector (Tesla)  </p>
+<p>This force governs many fundamental processes in plasma physics, space science, and accelerator technology.</p>
 <hr/>
-<h2 id="objectives">Objectives</h2>
+<h2 id="project-goals">Project Goals</h2>
 <ul>
-<li>Simulate particle motion in uniform and crossed fields.</li>
-<li>Vary parameters like velocity, charge, mass, and field strengths.</li>
-<li>Visualize 2D/3D trajectories using Python.</li>
-<li>Analyze physical phenomena like the Larmor radius and drift velocity.</li>
+<li>Simulate the 3D motion of charged particles under various field configurations  </li>
+<li>Numerically integrate Newton’s second law using the Euler method  </li>
+<li>Analyze motion types: circular, helical, linear, and drift trajectories  </li>
+<li>Derive physical quantities like the Larmor radius and drift velocity  </li>
+<li>Visualize results with interactive and static 3D plots</li>
 </ul>
 <hr/>
-<h2 id="simulation-code-python">Simulation Code (Python)</h2>
-<p>Below is a simple Euler method simulation using NumPy and Matplotlib:</p>
+<h2 id="physical-concepts">Physical Concepts</h2>
+<h3 id="1-pure-magnetic-field-vece-0">1. <strong>Pure Magnetic Field (<span class="arithmatex">\( \vec{E} = 0 \)</span>)</strong></h3>
+<ul>
+<li>The force is always perpendicular to the velocity  </li>
+<li>The particle performs <strong>uniform circular or helical motion</strong> </li>
+<li>No energy is gained or lost (speed remains constant)  </li>
+</ul>
+<h3 id="2-pure-electric-field-vecb-0">2. <strong>Pure Electric Field (<span class="arithmatex">\( \vec{B} = 0 \)</span>)</strong></h3>
+<ul>
+<li>The particle undergoes <strong>uniform linear acceleration</strong> </li>
+<li>Kinetic energy increases with time  </li>
+<li>Trajectory is a <strong>parabola in time</strong></li>
+</ul>
+<h3 id="3-crossed-fields-vece-perp-vecb">3. <strong>Crossed Fields (<span class="arithmatex">\( \vec{E} \perp \vec{B} \)</span>)</strong></h3>
+<ul>
+<li>Particle drifts at velocity:<br/>
+  $$
+  \vec{v}_d = \frac{\vec{E} \times \vec{B}}{B^2}
+  $$  </li>
+<li>Superposition of drift and circular motion: <strong>cycloidal trajectory</strong></li>
+</ul>
+<h3 id="4-larmor-radius">4. <strong>Larmor Radius</strong></h3>
+<p>The radius of circular motion in a uniform magnetic field is given by:</p>
+<div class="arithmatex">\[
+r_L = \frac{m v_\perp}{|q| B}
+\]</div>
+<p>Where <span class="arithmatex">\( v_\perp \)</span> is the component of velocity perpendicular to <span class="arithmatex">\( \vec{B} \)</span>.</p>
+<hr/>
+<h2 id="python-simulation-code">Python Simulation Code</h2>
+<p>The following code uses <strong>NumPy</strong> and <strong>Matplotlib</strong> to simulate and plot the trajectory using the <strong>Euler method</strong> for numerical integration:</p>
 <pre><code class="language-python">import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
-# Constants
-q = 1.6e-19       # Charge (Coulombs)
-m = 9.11e-31      # Mass (kg)
-E = np.array([0, 0, 0])           # Electric field (V/m)
-B = np.array([0, 0, 1])           # Magnetic field (T)
-v0 = np.array([1e6, 0, 1e6])      # Initial velocity (m/s)
-x0 = np.array([0.0, 0.0, 0.0])    # Initial position (m)
+# -------------------------------
+# 1. Define Physical Parameters
+# -------------------------------
 
-# Time parameters
+q = 1.6e-19        # Particle charge (C)
+m = 9.11e-31       # Particle mass (kg)
+
+E = np.array([0.0, 0.0, 0.0])   # Electric field (V/m)
+B = np.array([0.0, 0.0, 1.0])   # Magnetic field (T)
+
+v0 = np.array([1e6, 0.0, 1e6])  # Initial velocity (m/s)
+x0 = np.array([0.0, 0.0, 0.0])  # Initial position (m)
+
+# -------------------------------
+# 2. Time Discretization
+# -------------------------------
+
 dt = 1e-11        # Time step (s)
-t_max = 1e-7
+t_max = 1e-7      # Total time (s)
 steps = int(t_max / dt)
 
-# Initialize arrays
+# -------------------------------
+# 3. Initialize Arrays
+# -------------------------------
+
 x = np.zeros((steps, 3))
 v = np.zeros((steps, 3))
 x[0] = x0
 v[0] = v0
 
-# Euler method loop
+# -------------------------------
+# 4. Euler Method Loop
+# -------------------------------
+
 for i in range(steps - 1):
     F = q * (E + np.cross(v[i], B))
     a = F / m
     v[i + 1] = v[i] + a * dt
     x[i + 1] = x[i] + v[i] * dt
 
-# Plot 3D trajectory
+# -------------------------------
+# 5. 3D Trajectory Plot
+# -------------------------------
+
 fig = plt.figure(figsize=(10, 6))
 ax = fig.add_subplot(111, projection='3d')
-ax.plot(x[:, 0], x[:, 1], x[:, 2])
+ax.plot(x[:, 0], x[:, 1], x[:, 2], label="Particle Trajectory", color='navy')
 ax.set_xlabel('x (m)')
 ax.set_ylabel('y (m)')
 ax.set_zlabel('z (m)')
-ax.set_title('Charged Particle Trajectory in Magnetic Field')
+ax.set_title('Charged Particle Trajectory in Electromagnetic Field')
+ax.legend()
 plt.tight_layout()
 plt.show()
 </code></pre>
 <hr/>
 <h2 id="observations">Observations</h2>
 <ul>
-<li>If <span class="arithmatex">\( \vec{B} \)</span> is present and <span class="arithmatex">\( \vec{E} = 0 \)</span>, particle moves in a <strong>helix</strong>.</li>
-<li>If both <span class="arithmatex">\( \vec{E} \)</span> and <span class="arithmatex">\( \vec{B} \)</span> are present and perpendicular, the particle <strong>drifts</strong>.</li>
-<li>Larmor radius:<br/>
-  $$
-  r_L = \frac{mv_\perp}{qB}
-  $$</li>
+<li><strong>Helical Motion</strong>: When <span class="arithmatex">\( \vec{v} \)</span> has both perpendicular and parallel components relative to <span class="arithmatex">\( \vec{B} \)</span>, a helical path forms.  </li>
+<li><strong>Drift Motion</strong>: In <span class="arithmatex">\( \vec{E} \times \vec{B} \)</span> configuration, a constant lateral drift occurs.  </li>
+<li><strong>Acceleration</strong>: In the presence of an electric field, energy increases over time.  </li>
+<li><strong>Confinement</strong>: Stronger <span class="arithmatex">\( B \)</span> fields reduce the radius, improving magnetic confinement.</li>
 </ul>
 <hr/>
-<h2 id="applications">Applications</h2>
+<h2 id="real-world-applications">Real-World Applications</h2>
 <table>
 <thead>
 <tr>
-<th>Application</th>
-<th>Description</th>
+<th>System</th>
+<th>Role of Lorentz Force</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Cyclotron</td>
-<td>Circular motion of particles under <span class="arithmatex">\( \vec{B} \)</span></td>
+<td><strong>Cyclotron</strong></td>
+<td>Circular acceleration of particles via magnetic fields</td>
 </tr>
 <tr>
-<td>Mass spectrometer</td>
-<td>Deflection by <span class="arithmatex">\( \vec{B} \)</span> depends on <span class="arithmatex">\( m/q \)</span></td>
+<td><strong>Mass Spectrometry</strong></td>
+<td>Charge-to-mass separation using <span class="arithmatex">\( \vec{v} \times \vec{B} \)</span></td>
 </tr>
 <tr>
-<td>Tokamak</td>
-<td>Plasma confinement using <span class="arithmatex">\( \vec{E} \times \vec{B} \)</span> drift</td>
+<td><strong>Fusion Reactors</strong></td>
+<td>Plasma confinement with strong <span class="arithmatex">\( \vec{B} \)</span> and <span class="arithmatex">\( \vec{E} \)</span> fields</td>
 </tr>
 <tr>
-<td>Solar wind</td>
-<td>Deflected by Earth's magnetic field</td>
+<td><strong>Auroras</strong></td>
+<td>Charged solar particles guided by Earth's magnetic field</td>
+</tr>
+<tr>
+<td><strong>Van Allen Belts</strong></td>
+<td>Trapped particle dynamics governed by Earth's magnetosphere</td>
 </tr>
 </tbody>
 </table>
 <hr/>
-<h2 id="parameter-exploration">Parameter Exploration</h2>
-<p>You can change:
-- <code>q</code>, <code>m</code>: particle properties
-- <code>E</code>, <code>B</code>: field vectors
-- <code>v0</code>: initial velocity
-- <code>dt</code>, <code>t_max</code>: simulation time resolution</p>
+<h2 id="parameter-exploration-ideas">Parameter Exploration Ideas</h2>
+<p>To study different scenarios, try changing:</p>
+<ul>
+<li><code>q</code>, <code>m</code> → particle identity (electron, proton, ion, etc.)  </li>
+<li><code>E</code>, <code>B</code> → field directions and magnitudes  </li>
+<li><code>v0</code> → perpendicular vs. parallel velocity components  </li>
+<li><code>dt</code>, <code>t_max</code> → resolution and simulation span  </li>
+</ul>
+<p>For instance:
+- Set <span class="arithmatex">\( \vec{E} = [1e4, 0, 0] \)</span>, <span class="arithmatex">\( \vec{B} = [0, 0, 1] \)</span> for E × B drift<br/>
+- Try <span class="arithmatex">\( v_0 = [0, 1e6, 0] \)</span> to isolate circular motion<br/>
+- Simulate multiple particles or particles of opposite charge  </p>
 <hr/>
 <h2 id="conclusion">Conclusion</h2>
-<p>This simulation demonstrates how charged particles behave in electric and magnetic fields, illustrating the effects of the Lorentz force through numerical methods. It shows:</p>
+<p>This simulation provides a clear and flexible numerical tool to understand the behavior of charged particles under electromagnetic forces. It highlights:</p>
 <ul>
-<li><strong>Circular/Helical paths</strong> under uniform magnetic fields</li>
-<li><strong>Linear acceleration</strong> under electric fields</li>
-<li><strong>Drift motion</strong> in crossed <span class="arithmatex">\( \vec{E} \)</span> and <span class="arithmatex">\( \vec{B} \)</span></li>
+<li><strong>Rotational motion</strong> in magnetic fields  </li>
+<li><strong>Linear acceleration</strong> in electric fields  </li>
+<li><strong>Guided drift motion</strong> in combined fields  </li>
 </ul>
-<p>The approach is extensible to complex setups like:
-- Non-uniform or time-varying fields
-- Multi-particle systems
-- Relativistic dynamics</p>
-<p>Such simulations underpin real-world devices like <strong>cyclotrons, magnetic mirrors, fusion reactors</strong>, and <strong>space plasma studies</strong>.</p>
+<p>The approach can be extended to:
+- Use more accurate integration (e.g., Runge-Kutta)<br/>
+- Introduce spatially or temporally varying fields<br/>
+- Model multi-particle plasma dynamics<br/>
+- Include relativistic corrections for high-speed particles  </p>
+<p>Understanding Lorentz force dynamics is crucial in disciplines like <strong>astrophysics</strong>, <strong>plasma engineering</strong>, <strong>space weather modeling</strong>, and <strong>particle accelerator design</strong>.</p>
 <hr/>
+<h2 id="license">License</h2>
+<p>MIT License — Free to use, modify, and redistribute.</p>
+<blockquote>
+<p>Developed for educational and research purposes.</p>
+</blockquote>
 </div>
 </div><footer>
 <div aria-label="Footer Navigation" class="rst-footer-buttons" role="navigation">
