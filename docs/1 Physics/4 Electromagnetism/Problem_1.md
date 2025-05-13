@@ -186,11 +186,7 @@ Understanding Lorentz force dynamics is crucial in disciplines like **astrophysi
 
 ---
 
-##  License
 
-MIT License — Free to use, modify, and redistribute.
-
-> Developed for educational and research purposes.
 
 
 
