@@ -172,6 +172,182 @@
 <div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
 <div class="section" itemprop="articleBody">
 <h1 id="problem-1">Problem 1</h1>
+<h1 id="equivalent-resistance-using-graph-theory">Equivalent Resistance Using Graph Theory</h1>
+<hr/>
+<h2 id="motivation">Motivation</h2>
+<p>Calculating equivalent resistance is fundamental in circuit analysis. Traditional methods rely on identifying series and parallel combinations. However, for <strong>complex networks</strong>, this approach becomes inefficient and error-prone.</p>
+<p><strong>Graph theory</strong> provides a structured, algorithmic method to analyze circuits:</p>
+<ul>
+<li><strong>Nodes</strong> represent junctions.</li>
+<li><strong>Edges</strong> represent resistors (with weights equal to resistance).</li>
+</ul>
+<p>Using graph reduction and traversal algorithms, we can compute the <strong>total equivalent resistance</strong> even for intricate networks.</p>
+<hr/>
+<h2 id="theoretical-foundation">Theoretical Foundation</h2>
+<p>A resistor network can be modeled as an <strong>undirected weighted graph</strong>:</p>
+<ul>
+<li>Each <strong>node</strong> represents a connection point.</li>
+<li>Each <strong>edge</strong> connects two nodes and carries a <strong>resistance</strong>.</li>
+</ul>
+<p>We aim to compute the <strong>total resistance between two terminals</strong> (e.g., node A and B), regardless of how resistors are connected (series, parallel, nested).</p>
+<hr/>
+<h2 id="mathematical-background">Mathematical Background</h2>
+<h3 id="ohms-law">Ohm's Law:</h3>
+<div class="arithmatex">\[
+V = IR
+\]</div>
+<h3 id="kirchhoffs-laws">Kirchhoff’s Laws:</h3>
+<ul>
+<li><strong>KCL (Node Law)</strong>: The sum of currents into a node is zero.</li>
+<li><strong>KVL (Loop Law)</strong>: The sum of voltages in a closed loop is zero.</li>
+</ul>
+<p>Using these laws, a circuit graph can be converted into a system of equations.</p>
+<hr/>
+<h2 id="algorithm-description">Algorithm Description</h2>
+<h3 id="goal">Goal</h3>
+<p>Given a resistor network (graph), reduce it to a <strong>single equivalent resistance</strong> between two nodes.</p>
+<h3 id="key-steps">Key Steps</h3>
+<ol>
+<li><strong>Identify simple structures</strong>:</li>
+<li>Series connections</li>
+<li>
+<p>Parallel connections</p>
+</li>
+<li>
+<p><strong>Iteratively reduce</strong> the graph:</p>
+</li>
+<li>
+<p>Merge series resistors:<br/>
+     If nodes A–B–C form a chain:
+     $$
+     R_{eq} = R_{AB} + R_{BC}
+     $$</p>
+</li>
+<li>
+<p>Merge parallel resistors:<br/>
+     If multiple edges between A and B:
+     $$
+     \frac{1}{R_{eq}} = \sum \frac{1}{R_i}
+     $$</p>
+</li>
+<li>
+<p><strong>Repeat until only two nodes remain</strong> (the terminals), connected by one edge (the equivalent resistance).</p>
+</li>
+</ol>
+<hr/>
+<h2 id="handling-nested-structures">Handling Nested Structures</h2>
+<p>Nested combinations are reduced layer by layer:</p>
+<ul>
+<li>Use <strong>DFS or BFS</strong> to find:</li>
+<li><strong>Chains</strong>: For series reduction.</li>
+<li>
+<p><strong>Cycles</strong>: For parallel reduction.</p>
+</li>
+<li>
+<p>After each reduction, <strong>update the graph</strong> and repeat traversal.</p>
+</li>
+</ul>
+<hr/>
+<h2 id="pseudocode">Pseudocode</h2>
+<pre><code class="language-text">function calculate_equivalent_resistance(graph, terminalA, terminalB):
+    while graph has more than two nodes:
+        for each node in graph:
+            if node is not terminal and degree == 2:
+                neighbors = get_neighbors(node)
+                if not is_cycle(neighbors + node):
+                    reduce_series(node)
+        for each pair of nodes:
+            if multiple edges exist:
+                reduce_parallel(pair)
+    return weight of edge(terminalA, terminalB)
+</code></pre>
+<hr/>
+<h2 id="implementation-in-python-using-networkx">Implementation in Python (Using <code>networkx</code>)</h2>
+<pre><code class="language-python">import networkx as nx
+
+def reduce_series(G):
+    changed = True
+    while changed:
+        changed = False
+        for node in list(G.nodes()):
+            if G.degree(node) == 2 and node not in ('A', 'B'):
+                u, v = list(G.neighbors(node))
+                if G.number_of_edges(u, node) == 1 and G.number_of_edges(node, v) == 1:
+                    R1 = G[u][node]['resistance']
+                    R2 = G[node][v]['resistance']
+                    G.add_edge(u, v, resistance=R1 + R2)
+                    G.remove_node(node)
+                    changed = True
+                    break
+
+def reduce_parallel(G):
+    for u, v in list(G.edges()):
+        parallel_edges = [d['resistance'] for key, d in G.get_edge_data(u, v).items()]
+        if len(parallel_edges) &gt; 1:
+            Req_inv = sum(1/r for r in parallel_edges)
+            G.remove_edges_from(list(G.edges(u, v)))
+            G.add_edge(u, v, resistance=1 / Req_inv)
+
+def equivalent_resistance(G, start, end):
+    reduce_series(G)
+    reduce_parallel(G)
+    return G[start][end]['resistance']
+</code></pre>
+<hr/>
+<h2 id="example-inputs">Example Inputs</h2>
+<h3 id="1-simple-series">1. <strong>Simple Series</strong></h3>
+<ul>
+<li>A—1Ω—B—2Ω—C</li>
+</ul>
+<p>Find resistance between A and C:</p>
+<div class="arithmatex">\[
+R_{eq} = 1 + 2 = 3\ \Omega
+\]</div>
+<h3 id="2-simple-parallel">2. <strong>Simple Parallel</strong></h3>
+<ul>
+<li>A—1Ω—B  </li>
+<li>A—2Ω—B  </li>
+</ul>
+<p>Parallel:</p>
+<div class="arithmatex">\[
+\frac{1}{R_{eq}} = \frac{1}{1} + \frac{1}{2} = \frac{3}{2} \Rightarrow R_{eq} = \frac{2}{3}\ \Omega
+\]</div>
+<h3 id="3-nested-combination">3. <strong>Nested Combination</strong></h3>
+<pre><code>      ┌── 3Ω ──┐
+A ───┤         ├─── C
+     └── 6Ω ──┘
+</code></pre>
+<p>Parallel branch between A and C:</p>
+<div class="arithmatex">\[
+\frac{1}{R_{eq}} = \frac{1}{3} + \frac{1}{6} = \frac{1}{2} \Rightarrow R_{eq} = 2\ \Omega
+\]</div>
+<hr/>
+<h2 id="complexity-efficiency">Complexity &amp; Efficiency</h2>
+<ul>
+<li><strong>Series and Parallel reductions</strong> are linear in the number of nodes and edges.</li>
+<li>Worst-case: <span class="arithmatex">\( O(n^2) \)</span> due to repeated traversals and updates.</li>
+<li>Can be improved using:</li>
+<li>Union-Find structure for disjoint sets.</li>
+<li>Smart cycle detection to skip unnecessary checks.</li>
+</ul>
+<hr/>
+<h2 id="extensions-and-applications">Extensions and Applications</h2>
+<ul>
+<li>Works for resistors, conductance, or even capacitors (in frequency domain).</li>
+<li>Basis for <strong>circuit simulators</strong> (like SPICE).</li>
+<li>Extensible to <strong>mesh and nodal analysis</strong>.</li>
+</ul>
+<h2 id="-">---</h2>
+<h2 id="conclusion">Conclusion</h2>
+<p>Graph theory offers a powerful and elegant framework for analyzing electrical circuits, especially when dealing with complex or nested resistor networks. By representing circuits as weighted graphs, we can abstract away physical layouts and focus purely on the structural relationships between components.</p>
+<p>This method enables:</p>
+<ul>
+<li><strong>Automated simplification</strong> of resistor networks.</li>
+<li><strong>Scalability</strong> to large and intricate topologies.</li>
+<li><strong>Cross-domain applications</strong>, blending electrical engineering with computer science and discrete mathematics.</li>
+</ul>
+<p>While traditional series-parallel reduction is intuitive for small circuits, graph-based approaches generalize the process and open the door for advanced algorithmic techniques. As modern engineering increasingly relies on simulation and automation, such graph-theoretic methods become not just helpful—but essential.</p>
+<p>In conclusion, viewing circuits through the lens of graph theory enriches both the understanding and capability of circuit analysis, making it a vital tool in the modern electrical engineer’s toolkit.</p>
 </div>
 </div><footer>
 <div aria-label="Footer Navigation" class="rst-footer-buttons" role="navigation">
