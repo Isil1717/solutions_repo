@@ -210,3 +210,7 @@ This method enables:
 While traditional series-parallel reduction is intuitive for small circuits, graph-based approaches generalize the process and open the door for advanced algorithmic techniques. As modern engineering increasingly relies on simulation and automation, such graph-theoretic methods become not just helpful—but essential.
 
 In conclusion, viewing circuits through the lens of graph theory enriches both the understanding and capability of circuit analysis, making it a vital tool in the modern electrical engineer’s toolkit.
+![alt text](image.png)
+![alt text](image-1.png)
+![alt text](image-2.png)
+![alt text](image-3.png)
