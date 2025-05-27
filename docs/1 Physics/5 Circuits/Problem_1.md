@@ -215,4 +215,3 @@ In conclusion, viewing circuits through the lens of graph theory enriches both t
 ![alt text](image-2.png)
 ![alt text](image-3.png)
 
-https://colab.research.google.com/drive/1RLMLMAM2yPS-95j1oUpglaerayt7OzQt?authuser=0#scrollTo=s84KhQHYGStf
