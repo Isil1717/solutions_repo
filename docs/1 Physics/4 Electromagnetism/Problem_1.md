@@ -193,3 +193,5 @@ The Lorentz force provides a unified framework for understanding how electric an
 By adjusting parameters and simulating trajectories in Colab, students gain an intuitive and visual understanding of electromagnetic forces. The concepts covered here form a solid foundation for more advanced topics like non-uniform fields, relativistic dynamics, and electromagnetic wave-particle interactions.
 
 ---
+![alt text](image-14.png)
+![alt text](image-15.png)
