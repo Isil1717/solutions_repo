@@ -181,3 +181,5 @@ Sum of returns over time behaves normally, helping model portfolio risk and fore
 Understanding the Central Limit Theorem not only provides theoretical insight—it’s essential for applying statistics in the real world.
 
 
+![alt text](image.png)
+![alt text](image-1.png)
