@@ -172,6 +172,155 @@
 <div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
 <div class="section" itemprop="articleBody">
 <h1 id="problem-1">Problem 1</h1>
+<h1 id="central-limit-theorem-clt-exploration-through-simulation">Central Limit Theorem (CLT) Exploration through Simulation</h1>
+<h2 id="motivation">Motivation</h2>
+<p>The Central Limit Theorem (CLT) is a cornerstone of probability theory and inferential statistics. It explains why the normal distribution appears so frequently in the natural and social sciences. The theorem provides a powerful justification for using normal models in hypothesis testing, confidence intervals, and quality control—even when the data does not initially appear normal.</p>
+<p>In this notebook, we aim to:</p>
+<ul>
+<li>Explore the CLT by simulating sampling distributions from different population distributions.</li>
+<li>Understand how and why the sample mean becomes approximately normal.</li>
+<li>Investigate the influence of sample size and population variance on the distribution of sample means.</li>
+</ul>
+<p>This approach helps bridge theory and practice, illustrating why the CLT is fundamental to real-world data analysis.</p>
+<hr/>
+<h2 id="definitions-and-fundamental-concepts">Definitions and Fundamental Concepts</h2>
+<h3 id="population">Population</h3>
+<p>The full set of items or individuals under study. Denoted by the capital letter $X$.</p>
+<h3 id="sample">Sample</h3>
+<p>A subset of the population selected randomly to make statistical inferences.</p>
+<h3 id="random-variable">Random Variable</h3>
+<p>A variable that represents outcomes of a random phenomenon. It can be discrete or continuous.</p>
+<h3 id="sample-mean-barx">Sample Mean ($\bar{X}$)</h3>
+<p>The average of a sample of $n$ observations:</p>
+<div class="arithmatex">\[
+\bar{X} = \frac{1}{n} \sum_{i=1}^{n} X_i
+\]</div>
+<h3 id="population-mean-mu">Population Mean ($\mu$)</h3>
+<p>The true mean of the population:</p>
+<div class="arithmatex">\[
+\mu = \mathbb{E}[X] = \lim_{n \to \infty} \frac{1}{n} \sum_{i=1}^{n} X_i
+\]</div>
+<h3 id="variance-sigma2-and-standard-deviation-sigma">Variance ($\sigma^2$) and Standard Deviation ($\sigma$)</h3>
+<p>Variance is the expected squared deviation from the mean:</p>
+<div class="arithmatex">\[
+\sigma^2 = \mathbb{E}[(X - \mu)^2]
+\]</div>
+<p>Standard deviation is the square root of variance.</p>
+<h3 id="standard-error-se">Standard Error (SE)</h3>
+<p>The standard deviation of the sample mean:</p>
+<div class="arithmatex">\[
+SE = \frac{\sigma}{\sqrt{n}}
+\]</div>
+<p>This measures the spread of the sampling distribution of the mean.</p>
+<hr/>
+<h2 id="central-limit-theorem-formal-statement">Central Limit Theorem: Formal Statement</h2>
+<p>Let $X_1, X_2, \dots, X_n$ be i.i.d. (independent and identically distributed) random variables with mean $\mu$ and variance $\sigma^2$. Then, as $n \to \infty$:</p>
+<div class="arithmatex">\[
+\frac{\bar{X} - \mu}{\sigma/\sqrt{n}} \xrightarrow{d} \mathcal{N}(0, 1)
+\]</div>
+<p>In words, the distribution of the sample mean becomes approximately normal as the sample size increases, regardless of the original distribution.</p>
+<hr/>
+<h2 id="simulating-the-clt-with-different-distributions">Simulating the CLT with Different Distributions</h2>
+<p>We consider three population distributions:</p>
+<h3 id="1-uniform-distribution-u01">1. Uniform Distribution $U(0,1)$</h3>
+<ul>
+<li>Continuous, bounded, symmetric.</li>
+<li>Easy to visualize convergence.</li>
+</ul>
+<h3 id="2-exponential-distribution-textexplambda1">2. Exponential Distribution $\text{Exp}(\lambda=1)$</h3>
+<ul>
+<li>Continuous, right-skewed, unbounded.</li>
+<li>Requires larger sample sizes for normal approximation.</li>
+</ul>
+<h3 id="3-binomial-distribution-textbinn10-p05">3. Binomial Distribution $\text{Bin}(n=10, p=0.5)$</h3>
+<ul>
+<li>Discrete, symmetric for $p=0.5$.</li>
+<li>Demonstrates CLT even in non-continuous distributions.</li>
+</ul>
+<p>For each distribution:</p>
+<ul>
+<li>Simulate a large population (e.g., 100,000 values).</li>
+<li>Randomly sample with sizes $n = 5, 10, 30, 50, 100$.</li>
+<li>Repeat sampling (e.g., 1,000 times) and compute sample means.</li>
+<li>Visualize distributions of sample means with histograms.</li>
+</ul>
+<hr/>
+<h2 id="visualization-and-intuition">Visualization and Intuition</h2>
+<p>We expect the following patterns:</p>
+<ul>
+<li>Small $n$: Histograms resemble the original distribution.</li>
+<li>Medium $n$ (30+): The shape of the histogram smooths out.</li>
+<li>Large $n$ (50+): The histogram becomes bell-shaped.</li>
+</ul>
+<h3 id="table-convergence-behavior">Table: Convergence Behavior</h3>
+<table>
+<thead>
+<tr>
+<th>Distribution</th>
+<th>Shape</th>
+<th>CLT Speed</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Uniform(0,1)</td>
+<td>Symmetric</td>
+<td>Fast</td>
+<td>Smooth and bounded</td>
+</tr>
+<tr>
+<td>Exponential(1)</td>
+<td>Skewed</td>
+<td>Slow</td>
+<td>Requires larger $n$</td>
+</tr>
+<tr>
+<td>Binomial(10, 0.5)</td>
+<td>Discrete</td>
+<td>Moderate</td>
+<td>Symmetry helps convergence</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="key-properties-of-sampling-distributions">Key Properties of Sampling Distributions</h2>
+<ul>
+<li><strong>Mean of the sample means</strong> equals the population mean ($\mu$).</li>
+<li><strong>Standard deviation of the sample means</strong> equals $\sigma / \sqrt{n}$.</li>
+<li>Shape approaches normality as $n$ increases.</li>
+</ul>
+<p>This explains why sampling distributions of statistics like $\bar{X}$ can be approximated with normal models—even if the underlying data is non-normal.</p>
+<hr/>
+<h2 id="applications-of-the-central-limit-theorem">Applications of the Central Limit Theorem</h2>
+<h3 id="confidence-intervals">Confidence Intervals</h3>
+<p>The CLT enables construction of confidence intervals:</p>
+<div class="arithmatex">\[
+\bar{X} \pm z_{\alpha/2} \cdot \frac{\sigma}{\sqrt{n}}
+\]</div>
+<p>Where $z_{\alpha/2}$ is the standard normal quantile (e.g., 1.96 for 95% CI).</p>
+<h3 id="hypothesis-testing">Hypothesis Testing</h3>
+<p>CLT validates the use of $z$- and $t$-tests by approximating the distribution of the test statistic.</p>
+<h3 id="quality-control">Quality Control</h3>
+<p>Control charts track sample means. CLT ensures the chart limits are based on the normal distribution.</p>
+<h3 id="financial-modeling">Financial Modeling</h3>
+<p>Sum of returns over time behaves normally, helping model portfolio risk and forecast future prices.---</p>
+<h2 id="further-exploration">Further Exploration</h2>
+<ul>
+<li>Test the CLT with other distributions: Poisson, Beta, Log-normal.</li>
+<li>Try non-i.i.d. data and see how convergence fails.</li>
+<li>Compare sample means to medians or variances.</li>
+<li>Explore CLT in the context of bootstrap resampling.</li>
+</ul>
+<hr/>
+<h2 id="summary-and-key-takeaways">Summary and Key Takeaways</h2>
+<ul>
+<li>The CLT shows that sample means become normally distributed as sample size increases.</li>
+<li>The sampling distribution’s spread decreases as $n$ increases.</li>
+<li>Even skewed or discrete data produces normal-looking sample means at large $n$.</li>
+<li>The CLT underlies confidence intervals, hypothesis tests, and many practical tools in statistics.</li>
+</ul>
+<p>Understanding the Central Limit Theorem not only provides theoretical insight—it’s essential for applying statistics in the real world.</p>
 </div>
 </div><footer>
 <div aria-label="Footer Navigation" class="rst-footer-buttons" role="navigation">
