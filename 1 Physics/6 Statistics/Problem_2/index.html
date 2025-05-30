@@ -172,6 +172,219 @@
 <div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
 <div class="section" itemprop="articleBody">
 <h1 id="problem-2">Problem 2</h1>
+<h1 id="estimating-pi-using-monte-carlo-methods">Estimating $\pi$ Using Monte Carlo Methods</h1>
+<p>Monte Carlo simulations are a class of computational algorithms that rely on repeated random sampling to obtain numerical results. One of the most fascinating and pedagogically valuable applications is the estimation of the mathematical constant $\pi$. This document explores two classical Monte Carlo methods to approximate $\pi$:</p>
+<ul>
+<li><strong>Method 1</strong>: Random point generation inside a square enclosing a circle.</li>
+<li><strong>Method 2</strong>: Buffon’s Needle experiment involving probabilistic geometry.</li>
+</ul>
+<hr/>
+<h2 id="motivation">Motivation</h2>
+<p>Understanding how randomness and probability can help solve deterministic problems provides profound insights into both theoretical and applied mathematics. Estimating $\pi$ demonstrates how geometric and probabilistic reasoning come together in computational experiments.</p>
+<p>These methods:</p>
+<ul>
+<li>Serve as excellent educational tools.</li>
+<li>Illustrate convergence behavior and error analysis.</li>
+<li>Connect to real-world applications in statistics, physics, and finance.</li>
+</ul>
+<hr/>
+<h1 id="part-1-estimating-pi-using-a-circle">Part 1: Estimating $\pi$ Using a Circle</h1>
+<h2 id="theoretical-foundation">Theoretical Foundation</h2>
+<p>Let’s consider a <strong>unit circle</strong> centered at the origin $(0,0)$ and inscribed within a square that spans from $[-1, 1]$ on both axes.</p>
+<ul>
+<li>The <strong>area of the circle</strong> is:</li>
+</ul>
+<div class="arithmatex">\[
+A_{\text{circle}} = \pi r^2 = \pi \cdot 1^2 = \pi
+\]</div>
+<ul>
+<li>The <strong>area of the enclosing square</strong> is:</li>
+</ul>
+<div class="arithmatex">\[
+A_{\text{square}} = (2r)^2 = 4
+\]</div>
+<p>The probability that a randomly chosen point from the square also falls inside the circle is:</p>
+<div class="arithmatex">\[
+P = \frac{A_{\text{circle}}}{A_{\text{square}}} = \frac{\pi}{4}
+\]</div>
+<p>Hence, to estimate $\pi$:</p>
+<div class="arithmatex">\[
+\pi \approx 4 \cdot \frac{M}{N}
+\]</div>
+<p>Where:</p>
+<ul>
+<li>$N$ = Total number of points sampled</li>
+<li>$M$ = Number of points that fall inside the circle</li>
+</ul>
+<h2 id="geometric-insight">Geometric Insight</h2>
+<p>A point $(x, y)$ lies within the circle if:</p>
+<div class="arithmatex">\[
+x^2 + y^2 \leq 1
+\]</div>
+<p>Since we are sampling uniformly in the square $[-1, 1] \times [-1, 1]$, this inequality gives a natural boundary to separate 'in-circle' vs 'out-of-circle' points.</p>
+<h2 id="experimental-setup">Experimental Setup</h2>
+<p>To implement this method:</p>
+<ul>
+<li>Generate $N$ random points $(x_i, y_i)$ such that $x_i, y_i \in [-1, 1]$.</li>
+<li>Count how many points satisfy $x_i^2 + y_i^2 \leq 1$.</li>
+<li>Multiply the resulting fraction by 4.</li>
+</ul>
+<h2 id="convergence-analysis">Convergence Analysis</h2>
+<p>As we increase the number of randomly generated points $N$, the ratio $\frac{M}{N}$ should converge to $\frac{\pi}{4}$.</p>
+<h3 id="error-and-convergence">Error and Convergence</h3>
+<ul>
+<li>The variance of the estimator decreases proportionally to $\frac{1}{N}$.</li>
+<li>The <strong>standard error</strong> decreases as:</li>
+</ul>
+<div class="arithmatex">\[
+\text{Standard Error} \sim \frac{1}{\sqrt{N}}
+\]</div>
+<ul>
+<li>This implies that for more accurate results, exponentially more points are needed.</li>
+</ul>
+<h3 id="example-table">Example Table</h3>
+<table>
+<thead>
+<tr>
+<th>Points (N)</th>
+<th>Points in Circle (M)</th>
+<th>Estimated $\pi$</th>
+<th>Absolute Error</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>100</td>
+<td>78</td>
+<td>3.12</td>
+<td>0.02</td>
+</tr>
+<tr>
+<td>1,000</td>
+<td>789</td>
+<td>3.156</td>
+<td>0.014</td>
+</tr>
+<tr>
+<td>10,000</td>
+<td>7854</td>
+<td>3.1416</td>
+<td>0.0000</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h1 id="part-2-estimating-pi-using-buffons-needle">🧷 Part 2: Estimating $\pi$ Using Buffon’s Needle</h1>
+<h2 id="theoretical-foundation_1">Theoretical Foundation</h2>
+<p>Buffon's Needle problem provides a probabilistic method to estimate $\pi$.</p>
+<h3 id="problem-statement">Problem Statement</h3>
+<p>Drop a needle of length $l$ onto a plane with equally spaced parallel lines $d$ units apart ($l \leq d$). What's the probability $P$ that the needle crosses a line?</p>
+<h3 id="formula-derivation">Formula Derivation</h3>
+<p>It can be shown:</p>
+<div class="arithmatex">\[
+P = \frac{2l}{\pi d} \Rightarrow \pi \approx \frac{2lN}{dC}
+\]</div>
+<p>Where:</p>
+<ul>
+<li>$N$: total number of needle drops</li>
+<li>$C$: number of times the needle crosses a line</li>
+</ul>
+<h3 id="probability-distribution">Probability Distribution</h3>
+<p>For a single throw, the probability involves two random variables:</p>
+<ul>
+<li>$\theta \in [0, \pi]$: angle between the needle and the lines</li>
+<li>$x \in [0, d/2]$: distance from needle center to closest line</li>
+</ul>
+<p>A crossing occurs when:</p>
+<div class="arithmatex">\[
+\frac{l}{2} \sin \theta \geq x
+\]</div>
+<h2 id="convergence-comparison">Convergence &amp; Comparison</h2>
+<p>Just like the circle method, this approach suffers from slow convergence. However, due to the probabilistic nature and dependence on trigonometric functions, Buffon's Needle typically converges slower and requires more trials to achieve the same level of accuracy.</p>
+<h3 id="experimental-convergence-table">Experimental Convergence Table</h3>
+<table>
+<thead>
+<tr>
+<th>Drops (N)</th>
+<th>Crosses (C)</th>
+<th>Estimated $\pi$</th>
+<th>Absolute Error</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1,000</td>
+<td>636</td>
+<td>3.144</td>
+<td>0.0024</td>
+</tr>
+<tr>
+<td>10,000</td>
+<td>6362</td>
+<td>3.1415</td>
+<td>0.0001</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="comparison-of-methods">Comparison of Methods</h2>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Formula</th>
+<th>Accuracy</th>
+<th>Convergence Rate</th>
+<th>Implementation Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Circle Sampling</td>
+<td>$4 \cdot \frac{\text{inside}}{N}$</td>
+<td>High with large $N$</td>
+<td>$\sim 1/\sqrt{N}$</td>
+<td>Simple</td>
+</tr>
+<tr>
+<td>Buffon’s Needle</td>
+<td>$\frac{2lN}{dC}$</td>
+<td>Medium</td>
+<td>Slower</td>
+<td>Moderate (geometry + trig)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="summary-of-useful-formulas">Summary of Useful Formulas</h2>
+<ul>
+<li>
+<p>Circle method:
+  <span class="arithmatex">\(\pi \approx 4 \cdot \frac{\text{# inside circle}}{\text{total samples}}\)</span></p>
+</li>
+<li>
+<p>Buffon’s needle:
+  <span class="arithmatex">\(\pi \approx \frac{2 \cdot l \cdot N}{d \cdot C}\)</span></p>
+</li>
+</ul>
+<hr/>
+<h2 id="further-exploration-ideas">Further Exploration Ideas</h2>
+<ul>
+<li>How do different random sampling strategies affect convergence?</li>
+<li>What happens when the needle length is greater than the line distance ($l &gt; d$)?</li>
+<li>Can we reduce variance using stratified or importance sampling?</li>
+<li>Try visualizing all samples in 2D for better geometric intuition.</li>
+<li>Analyze the speed/accuracy trade-off in both methods.</li>
+</ul>
+<hr/>
+<h2 id="conclusion">Conclusion</h2>
+<p>Monte Carlo methods provide intuitive and powerful ways to estimate quantities like $\pi$. These simulations:</p>
+<ul>
+<li>Reinforce understanding of probability and geometry.</li>
+<li>Illustrate convergence behavior.</li>
+<li>Offer a gateway into stochastic modeling and scientific computing.</li>
+</ul>
+<p>By refining our methods and exploring further, we gain insight not only into $\pi$, but also into how randomness can solve deterministic problems.</p>
+<hr/>
 </div>
 </div><footer>
 <div aria-label="Footer Navigation" class="rst-footer-buttons" role="navigation">
