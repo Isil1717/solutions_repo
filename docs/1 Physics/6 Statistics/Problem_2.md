@@ -188,3 +188,7 @@ By refining our methods and exploring further, we gain insight not only into \$\
 
 ---
 
+
+![alt text](image-3.png)
+![alt text](image-4.png)
+![alt text](image-5.png)
