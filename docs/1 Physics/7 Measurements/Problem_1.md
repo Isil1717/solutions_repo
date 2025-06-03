@@ -183,3 +183,6 @@ This exercise highlights the importance of:
 
 Ultimately, the experiment reinforces foundational concepts in classical mechanics and experimental physics, especially the interplay between theoretical models and real-world measurement limitations.
 
+![alt text](image.png)
+![alt text](image-2.png)
+![alt text](image-3.png)
